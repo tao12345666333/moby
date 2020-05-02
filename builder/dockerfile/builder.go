@@ -194,7 +194,7 @@ func (b *Builder) build(source builder.Source, dockerfile *parser.Result) (*buil
 
 	stages, metaArgs, err := instructions.Parse(dockerfile.AST)
 	if err != nil {
-		if instructions.IsUnknownInstruction(err) {
+		if errors.As(err, instructions.UnknownInstruction{}) {
 			buildsFailed.WithValues(metricsUnknownInstructionError).Inc()
 		}
 		return nil, errdefs.InvalidParameter(err)

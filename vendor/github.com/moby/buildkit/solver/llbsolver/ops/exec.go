@@ -31,6 +31,7 @@ import (
 	"github.com/moby/buildkit/solver"
 	"github.com/moby/buildkit/solver/llbsolver"
 	"github.com/moby/buildkit/solver/pb"
+	"github.com/moby/buildkit/util/grpcerrors"
 	"github.com/moby/buildkit/util/progress/logs"
 	utilsystem "github.com/moby/buildkit/util/system"
 	"github.com/moby/buildkit/worker"
@@ -41,7 +42,6 @@ import (
 	"github.com/sirupsen/logrus"
 	bolt "go.etcd.io/bbolt"
 	"google.golang.org/grpc/codes"
-	"google.golang.org/grpc/status"
 )
 
 const execCacheType = "buildkit.exec.v0"
@@ -293,7 +293,7 @@ func (g *cacheRefGetter) getRefCacheDirNoCache(ctx context.Context, key string, 
 			if mRef, err := g.cm.GetMutable(ctx, si.ID()); err == nil {
 				logrus.Debugf("reusing ref for cache dir: %s", mRef.ID())
 				return mRef, nil
-			} else if errors.Cause(err) == cache.ErrLocked {
+			} else if errors.Is(err, cache.ErrLocked) {
 				locked = true
 			}
 		}
@@ -349,7 +349,7 @@ func (e *execOp) getSSHMountable(ctx context.Context, m *pb.Mount) (cache.Mounta
 		if m.SSHOpt.Optional {
 			return nil, nil
 		}
-		if st, ok := status.FromError(errors.Cause(err)); ok && st.Code() == codes.Unimplemented {
+		if grpcerrors.Code(err) == codes.Unimplemented {
 			return nil, errors.Errorf("no SSH key %q forwarded from the client", m.SSHOpt.ID)
 		}
 		return nil, err
@@ -447,7 +447,7 @@ func (e *execOp) getSecretMountable(ctx context.Context, m *pb.Mount) (cache.Mou
 
 	dt, err := secrets.GetSecret(ctx, caller, id)
 	if err != nil {
-		if errors.Cause(err) == secrets.ErrNotFound && m.SecretOpt.Optional {
+		if errors.Is(err, secrets.ErrNotFound) && m.SecretOpt.Optional {
 			return nil, nil
 		}
 		return nil, err

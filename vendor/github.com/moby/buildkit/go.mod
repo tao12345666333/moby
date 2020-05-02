@@ -4,6 +4,7 @@ go 1.13
 
 require (
 	github.com/AkihiroSuda/containerd-fuse-overlayfs v0.0.0-20200220082720-bb896865146c
+	github.com/Azure/go-ansiterm v0.0.0-20170929234023-d6e3b3328b78 // indirect
 	github.com/BurntSushi/toml v0.3.1
 	github.com/Microsoft/go-winio v0.4.15-0.20190919025122-fc70bd9a86b5
 	github.com/Microsoft/hcsshim v0.8.7 // indirect
@@ -32,6 +33,7 @@ require (
 	github.com/google/go-cmp v0.3.1
 	github.com/google/shlex v0.0.0-20150127133951-6f45313302b9
 	github.com/google/uuid v1.1.1 // indirect
+	github.com/grpc-ecosystem/go-grpc-middleware v1.2.0
 	github.com/grpc-ecosystem/grpc-opentracing v0.0.0-20180507213350-8e809c8a8645
 	github.com/hashicorp/go-immutable-radix v1.0.0
 	github.com/hashicorp/golang-lru v0.5.1
@@ -47,7 +49,7 @@ require (
 	github.com/opencontainers/runtime-spec v1.0.1
 	github.com/opencontainers/selinux v1.3.2 // indirect
 	github.com/opentracing-contrib/go-stdlib v0.0.0-20171029140428-b1a47cfbdd75
-	github.com/opentracing/opentracing-go v0.0.0-20171003133519-1361b9cd60be
+	github.com/opentracing/opentracing-go v1.1.0
 	github.com/pkg/errors v0.9.1
 	github.com/pkg/profile v1.2.1
 	github.com/serialx/hashring v0.0.0-20190422032157-8b2912629002
@@ -70,7 +72,6 @@ require (
 	google.golang.org/genproto v0.0.0-20200227132054-3f1135a288c9
 	google.golang.org/grpc v1.27.1
 	gopkg.in/check.v1 v1.0.0-20180628173108-788fd7840127 // indirect
-	gotest.tools v2.2.0+incompatible
 	gotest.tools/v3 v3.0.2 // indirect
 )
 
